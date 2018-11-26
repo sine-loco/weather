@@ -8,6 +8,7 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
+import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @Configuration
@@ -22,6 +23,7 @@ public class RouterFunctionConfig {
 
     @Bean
     public RouterFunction<ServerResponse> cityWeather() {
-        return route(GET("/weather"), routerHelper::getCityWeather);
+        return route(GET("/weather"), routerHelper::getCityWeather)
+                .andRoute(POST("/cities/add"), routerHelper::addCity);
     }
 }

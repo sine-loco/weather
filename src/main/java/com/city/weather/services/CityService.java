@@ -3,6 +3,7 @@ package com.city.weather.services;
 import com.city.weather.domain.dbos.CityDTO;
 import com.city.weather.domain.entities.City;
 import com.city.weather.domain.repositories.CityRepository;
+import com.city.weather.utl.exeptions.CityExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,8 @@ import static reactor.core.publisher.Mono.just;
 
 /**
  * City service
+ *
+ * unfortunately JPA not reactive so far! Coming soon ...
  */
 @Service
 @Transactional
@@ -37,6 +40,15 @@ public class CityService {
         if (this.notNullCity(city) && city.getCityId() != null) {
             return just(city);
         }
+        return empty();
+    }
+
+    public Mono<City> addCity(Mono<CityDTO> cityDtoMono) {
+        final String name = getCityName(cityDtoMono);
+        final City city = new City(name);
+        if (cityRepository.existsCityByName(name)) throw new CityExistException();
+        City savedCity = cityRepository.save(city);
+        if (this.notNullCity(savedCity)) return just(savedCity);
         return empty();
     }
 

@@ -5,6 +5,7 @@ import com.city.weather.domain.entities.City;
 import com.city.weather.domain.entities.Weather;
 import com.city.weather.services.CityService;
 import com.city.weather.web.api.OpenWeatherApi;
+import com.city.weather.web.config.RequestHandlerConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.http.MediaType;
@@ -13,7 +14,10 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.util.Optional;
+
+import static reactor.core.publisher.Mono.just;
 
 @Service
 @CacheConfig(cacheNames = "WeatherCache")
@@ -21,11 +25,13 @@ public class RouterHelper {
 
     private final CityService cityService;
     private final OpenWeatherApi openWeatherApi;
+    private final RequestHandlerConfig requestHandlerConfig;
 
     @Autowired
-    public RouterHelper(OpenWeatherApi openWeatherApi, CityService cityService) {
+    public RouterHelper(OpenWeatherApi openWeatherApi, CityService cityService, RequestHandlerConfig requestHandlerConfig) {
         this.openWeatherApi = openWeatherApi;
         this.cityService = cityService;
+        this.requestHandlerConfig = requestHandlerConfig;
     }
 
     public Mono<ServerResponse> getCityWeather(ServerRequest request) {
@@ -61,6 +67,16 @@ public class RouterHelper {
         return MediaType.APPLICATION_JSON;
     }
 
+    public Mono<ServerResponse> addCity(ServerRequest request) {
 
+        return requestHandlerConfig.requireValidBody(body -> {
+            Mono<CityDTO> cityDtoMono = body.map(j -> new CityDTO(j.getName()));
+
+            return cityService.addCity(cityDtoMono)
+                    .flatMap(city -> ServerResponse.created(URI.create("http://localhost:port/city/" + city.getId()))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .body(just(city), City.class)).switchIfEmpty(ServerResponse.ok().build());
+        }, request, CityDTO.class);
+    }
 }
 
