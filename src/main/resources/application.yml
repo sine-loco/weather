@@ -1,3 +1,6 @@
+
+update.delay: 7000
+
 logging:
     level:
         com.black.weatherflux: INFO

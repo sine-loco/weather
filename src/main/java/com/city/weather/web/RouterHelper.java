@@ -78,5 +78,10 @@ public class RouterHelper {
                             .body(just(city), City.class)).switchIfEmpty(ServerResponse.ok().build());
         }, request, CityDTO.class);
     }
+
+    public Mono<ServerResponse> allCities() {
+        return ServerResponse.ok()
+                .body(cityService.allCities(), City.class);
+    }
 }
 

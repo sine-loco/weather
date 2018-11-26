@@ -24,6 +24,7 @@ public class RouterFunctionConfig {
     @Bean
     public RouterFunction<ServerResponse> cityWeather() {
         return route(GET("/weather"), routerHelper::getCityWeather)
+                .andRoute(GET("/cities"), request -> routerHelper.allCities())
                 .andRoute(POST("/cities/add"), routerHelper::addCity);
     }
 }
