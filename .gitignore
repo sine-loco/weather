@@ -23,7 +23,7 @@
 /dist/
 /nbdist/
 /.nb-gradle/
-.gitignore
+# sine-loco. what for ?! .gitignore
 .mvn/
 mvnw
 mvnw.cmd

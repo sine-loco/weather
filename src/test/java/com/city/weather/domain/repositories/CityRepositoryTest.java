@@ -16,6 +16,7 @@ import java.util.stream.IntStream;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+// sine-loco. why does one need ugly junit:4?
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional

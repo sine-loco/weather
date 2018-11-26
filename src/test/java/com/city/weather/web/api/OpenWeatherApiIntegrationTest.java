@@ -10,6 +10,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+// FIXME this test is broken
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class OpenWeatherApiIntegrationTest {

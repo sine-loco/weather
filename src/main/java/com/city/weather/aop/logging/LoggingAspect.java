@@ -1,5 +1,7 @@
 package com.city.weather.aop.logging;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -16,16 +18,11 @@ import java.util.Arrays;
 /**
  * Aspect for logging execution of service and repository Spring components.
  */
+@Slf4j
 @Aspect
+@RequiredArgsConstructor
 public class LoggingAspect {
-
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
-
     private final Environment env;
-
-    public LoggingAspect(Environment env) {
-        this.env = env;
-    }
 
     /**
      * Pointcut that matches all repositories, services and Web REST endpoints.

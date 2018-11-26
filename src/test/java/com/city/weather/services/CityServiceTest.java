@@ -16,6 +16,12 @@ import reactor.core.publisher.Mono;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+
+/* sine-loco
+as you use test-ng, you shoul create test suite. and make service test run after
+repository test because service depends on repository */
 
 @SpringBootTest
 @Transactional
@@ -43,7 +49,8 @@ public class CityServiceTest extends AbstractTestNGSpringContextTests {
         final CityDTO cityDTO = new CityDTO(name);
         final Mono<City> cityMono = cityService.addCity(Mono.just(cityDTO));
         final City city = cityMono.block();
-        assert city != null;
+
+        assertNotNull( city );
         assertThat(city.getName()).isEqualTo(name);
     }
 
@@ -55,12 +62,12 @@ public class CityServiceTest extends AbstractTestNGSpringContextTests {
         Mono<CityWeatherDTO> cityWeatherDto = Mono.just(new CityWeatherDTO(cityId, JSON, XML));
         cityService.updateCity(city, cityWeatherDto);
 
-        final Optional<City> cityById = cityRepository.findByCityId(cityId);
-        final City upCity = cityById.get();
-        assertThat(upCity.getName()).isEqualTo(name);
-        final Weather weather = upCity.getWeather();
-        assertThat(weather.getJson()).isEqualTo(JSON);
-        assertThat(weather.getXml()).isEqualTo(XML);
+        Optional<City> cityById = cityRepository.findByCityId(cityId);
+        City upCity = cityById.get();
+        assertEquals(upCity.getName(), name);
+        Weather weather = upCity.getWeather();
+        assertEquals(weather.getJson(), JSON);
+        assertEquals(weather.getXml(), XML);
     }
 
 }

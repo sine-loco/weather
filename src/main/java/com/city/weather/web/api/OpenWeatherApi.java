@@ -3,6 +3,7 @@ package com.city.weather.web.api;
 import com.city.weather.domain.dbos.CityWeatherDTO;
 import com.city.weather.domain.dbos.WeatherDTO;
 import com.city.weather.web.config.SiteProperties;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.ClientResponse;
@@ -15,16 +16,12 @@ import reactor.util.function.Tuple3;
  * API for weather site
  */
 @Component
+@RequiredArgsConstructor
 public class OpenWeatherApi {
 
     private final SiteProperties properties;
     private final WebClientApi webClientApi;
 
-    @Autowired
-    public OpenWeatherApi(SiteProperties properties, WebClientApi webClientApi) {
-        this.properties = properties;
-        this.webClientApi = webClientApi;
-    }
 
     public Mono<ServerResponse> inCity(String city, String media) {
 
