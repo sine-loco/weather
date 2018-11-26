@@ -5,3 +5,9 @@ logging:
 spring:
     jpa:
         hibernate.ddl-auto: none
+
+site:
+    host: api.openweathermap.org
+    path: data/2.5/weather
+    appid: 8cb969812b8e2b288af6925d650b2751
+    timeout: 1000
