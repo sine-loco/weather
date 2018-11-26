@@ -1,3 +1,7 @@
 logging:
     level:
         com.black.weatherflux: INFO
+
+spring:
+    jpa:
+        hibernate.ddl-auto: none
