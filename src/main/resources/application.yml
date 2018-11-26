@@ -4,7 +4,8 @@ logging:
 
 spring:
     jpa:
-        hibernate.ddl-auto: none
+    hibernate.ddl-auto: create-drop
+#        hibernate.ddl-auto: none
 
 site:
     host: api.openweathermap.org
